@@ -33,5 +33,3 @@ Register.addConvertTo(
     'district_prostitution_ring_world_public',
     'district_prostitution_ring_world_reserve'
 );
-
-export default Register

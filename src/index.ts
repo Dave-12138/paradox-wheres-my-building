@@ -14,18 +14,18 @@ const vanilla = [
     "04_ringworld_districts.txt",
     "05_wilderness_districts.txt",
 ]
-const v = {
-    normal: [
-        "00_urban_districts.txt",
-        "02_rural_districts.txt",
-    ],
-    // habitat: [
-    //     "03_habitat_districts.txt",
-    // ],
-    ring: [
-        "04_ringworld_districts.txt",
-    ]
-}
+// const van = {
+//     normal: [
+//         "00_urban_districts.txt",
+//         "02_rural_districts.txt",
+//     ],
+//     habitat: [
+//          "03_habitat_districts.txt",
+//     ],
+//     ring: [
+//         "04_ringworld_districts.txt",
+//     ]
+// }
 const converPatt = /(?<=convert_to = \{)[\s\w\n]+(?=\})/;
 class District {
     name: string;
