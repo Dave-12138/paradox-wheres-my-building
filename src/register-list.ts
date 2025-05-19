@@ -24,6 +24,14 @@ Register.addConvertTo(
     'district_prostitution_private',
     'district_prostitution_public'
 );
+// CG SUC city
+Register.addConvertTo(
+    'district_sex_city_prostitute',
+);
+// CG SUC dragon netst
+Register.addConvertTo(
+    'district_dragon_nest_city',
+);
 // CG SUC ring
 Register.addConvertTo(
     'district_prostitution_ring_world_city',
