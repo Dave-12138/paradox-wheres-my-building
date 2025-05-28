@@ -1,5 +1,28 @@
 import Register from "./planet-register";
 
+// Register.addConvertTo({
+//     districts: [
+//         '城市区划',
+//         '发电区划（城市1）',
+//         '采矿区划（城市2）',
+//         '农业区划（城市3）',
+//         '工业区划（未使用）',
+//         '研究区划（未使用）'
+//     ],
+//     onlyIf: 原版区划名 => false
+// });
+// 如果没有onlyIf，可简化为
+// Register.addConvertTo(
+//     '城市区划',
+//     '发电区划（城市1）',
+//     '采矿区划（城市2）',
+//     '农业区划（城市3）',
+//     '工业区划（未使用）',
+//     '研究区划（未使用）'
+// );
+// 原版格式塔上环每个月刷没首府的bug
+Register.addConvertTo({ districts: ['district_rw_hive'], onlyIf: e => e == 'district_city' });
+Register.addConvertTo({ districts: ['district_rw_nexus'], onlyIf: e => e == 'district_city' });
 // CG INN
 Register.addConvertTo(
     'district_holylight_city',
@@ -40,4 +63,9 @@ Register.addConvertTo(
     'district_prostitution_ring_world_house',
     'district_prostitution_ring_world_public',
     'district_prostitution_ring_world_reserve'
+);
+
+// CG SOS
+Register.addConvertTo(
+    'district_depraved_tentacle_city',
 );

@@ -2,3 +2,5 @@
 /env.json
 /log.txt
 /dist
+*.vdf
+*.bat

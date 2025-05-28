@@ -92,7 +92,11 @@ const sumList = vanilla.map(readDistrict).flat()
 // log
 // sumList.forEach(e => console.log((({ pos, name, convert_to }) => JSON.stringify({ pos, name, convert_to }))(e), '\n===================='));
 // 插入
-sumList.forEach(ds => Register.list.forEach(ns => { if (ns[ds.pos]) ds.convert_to?.push(ns[ds.pos] ?? ""); }));
+sumList.forEach(ds => Register.list.forEach(ns => {
+    if (ns.districts[ds.pos] && (!ns.onlyIf || ns.onlyIf(ds.name))) {
+        ds.convert_to?.push(ns.districts[ds.pos] ?? "");
+    }
+}));
 // 合并
 const rst = Object.keys(variables).map(k => `@${k} = ${variables[k]}\n`).join('') + sumList.reduce((pv, v, i) => pv + v.result + '\n\n', "")
 // log
