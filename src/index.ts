@@ -88,7 +88,7 @@ function readDistrict(filename: string): District[] {
 }
 // const test = fs.readFileSync(path.join(vanillaPath, "01_arcology_districts.txt"), "utf8");
 const sumList = vanilla.map(readDistrict).flat()
-    .filter(e => !!e.convert_to && !/potential = \{\n\s+always = no/.test(e.text));
+    .filter(e => !!e.convert_to && /*这里筛掉了 always=no*/!/potential = \{\n\s+always = no/.test(e.text));
 // log
 // sumList.forEach(e => console.log((({ pos, name, convert_to }) => JSON.stringify({ pos, name, convert_to }))(e), '\n===================='));
 // 插入
