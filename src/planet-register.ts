@@ -33,3 +33,14 @@ const Register = {
     list
 }
 export default Register;
+
+const isRingOrDefaultCity = (e: string) => e.startsWith("district_rw") || e == "district_city" || e == "district_mindlink";
+const noRingOrHab = (e: string) => !e.startsWith("district_rw") && !e.startsWith('district_hab');
+// 非居住站或环的语法糖
+export function useSimple(...args: Dset) {
+    Register.addConvertTo({ districts: args, onlyIf: noRingOrHab });
+}
+// 环的语法糖
+export function useRing(...args: Dset) {
+    Register.addConvertTo({ districts: args, onlyIf: isRingOrDefaultCity });
+}

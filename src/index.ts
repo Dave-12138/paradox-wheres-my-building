@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Register from "./planet-register";
-import "./register-list"
+import "./registed/index"
 import evd from '../env.json'
 const vanillaPath = path.join(evd.gamePath, 'common/districts');
 const targetPath = path.join(evd.modPath, 'common/districts');
@@ -48,15 +48,15 @@ class District {
         // if (!this.convert_to) {
         //     return undefined;
         // }
-        const ruralNames = [['generator', 'energy'], ['mining'], ['farming']]
-        for (let i = 1; i < 4; i++) {
+        if (this.text.includes('slot_city_government'))
+            return 0;
+        const ruralNames = [['generator', 'energy'], ['mining'], ['farming'], ['industrial'], ['science']]
+        for (let i = 1; i < 6; i++) {
             if (this._any((str: string) => str.endsWith('_' + i)) || this._any(str => ruralNames[i - 1].some(k => str.includes(k)))) {
                 return i;
             }
         }
 
-        if (this.text.includes('slot_city_government'))
-            return 0;
         return -1;
     }
     /**@type {string} */
@@ -88,7 +88,7 @@ function readDistrict(filename: string): District[] {
 }
 // const test = fs.readFileSync(path.join(vanillaPath, "01_arcology_districts.txt"), "utf8");
 const sumList = vanilla.map(readDistrict).flat()
-    .filter(e => !!e.convert_to && /*这里筛掉了 always=no*/!/potential = \{\n\s+always = no/.test(e.text));
+    .filter(e => !!e.convert_to && /*这里筛掉了 always=no*/ !/potential = \{\n\s+always = no/.test(e.text));
 // log
 // sumList.forEach(e => console.log((({ pos, name, convert_to }) => JSON.stringify({ pos, name, convert_to }))(e), '\n===================='));
 // 插入
