@@ -38,6 +38,7 @@ class District {
     convert_to: string[] | undefined;
     text: string;
     pos: number;
+    moded: boolean;
     constructor(obj: string | District) {
         if (obj instanceof Object) {
             Object.assign(this, obj);
@@ -49,6 +50,7 @@ class District {
             this.convert_to = convert_to;
         }
         this.pos = this._calcPos();
+        this.moded = false;
     }
     _calcPos() {
         // if (!this.convert_to) {
@@ -67,7 +69,10 @@ class District {
     }
     /**@type {string} */
     get result() {
-        return this.text.replace(/(?:convert_to = \{)[\s\w\n]+(?:\})/, `inline_script = districts/PWMB_convert_to/${this.name} `);
+        const gk = `inline_script = districts/PWMB_convert_to/${this.name} `;
+        if (this.text.includes('convert_to'))
+            return this.text.replace(/(?:convert_to = \{)[\s\w\n]+(?:\})/, gk);
+        return this.text.replace(/(?=\n\})/, '\n\t' + gk);
         // return this.text.replace(converPatt, this.convert_to?.reduce((pv, v) => `${pv}\t${v}\n\t`, "\n\t") ?? "");
     }
     _any(s: ((value: string) => boolean)): boolean {
@@ -95,17 +100,22 @@ function readDistrict(filename: string): District[] {
 }
 // const test = fs.readFileSync(path.join(vanillaPath, "01_arcology_districts.txt"), "utf8");
 const sumList = vanilla.map(readDistrict).flat()
-    .filter(e => !!e.convert_to && /*这里筛掉了 always=no*/ !/potential = \{\n\s+always = no/.test(e.text));
+    .filter(e => /* !!e.convert_to && */ /*这里筛掉了 always=no*/ !/potential = \{\n\s+always = no/.test(e.text) && !e.text.includes('slot_cosmogenesis_empty'));
 // log
 // sumList.forEach(e => console.log((({ pos, name, convert_to }) => JSON.stringify({ pos, name, convert_to }))(e), '\n===================='));
 // 插入
 sumList.forEach(ds => Register.list.forEach(ns => {
     if (ns.districts[ds.pos] && (!ns.onlyIf || ns.onlyIf(ds.name))) {
-        ds.convert_to?.push(ns.districts[ds.pos] ?? "");
+        if (ds.convert_to === undefined) {
+            ds.convert_to = [ns.districts[ds.pos] ?? ""];
+        } else {
+            ds.convert_to?.push(ns.districts[ds.pos] ?? "");
+        }
+        ds.moded = true;
     }
 }));
 // 合并
-const rst = Object.keys(variables).map(k => `@${k} = ${variables[k]}\n`).join('') + sumList.reduce((pv, v, i) => pv + v.result + '\n\n', "")
+const rst = Object.keys(variables).map(k => `@${k} = ${variables[k]}\n`).join('') + sumList.filter(d => d.moded).reduce((pv, v, i) => pv + v.result + '\n\n', "")
 // log
 // console.log(rst);
 
@@ -113,10 +123,9 @@ const rst = Object.keys(variables).map(k => `@${k} = ${variables[k]}\n`).join(''
 if (!params['debug']) {
     fs.writeFileSync(path.join(targetPath, 'PWMB_overwrite_districts.txt'), rst, { encoding: "utf-8", flag: "w+" });
 
-    sumList.forEach(d => {
-
+    sumList.filter(d => d.moded).forEach(d => {
         const inlineScriptPath = path.join(evd.modPath, 'common/inline_scripts/districts/PWMB_convert_to', d.name + '.txt');
-        fs.writeFileSync(inlineScriptPath, `convert_to = {${d.convert_to?.join('\n\t')}\n}`, { encoding: "utf-8", flag: "w+" });
+        fs.writeFileSync(inlineScriptPath, `convert_to = {\n\t${d.convert_to?.join('\n\t')}\n}`, { encoding: "utf-8", flag: "w+" });
     });
 } else {
     fs.writeFileSync(path.join('.', `log-${Date.now()}.txt`), rst, { encoding: "utf-8", flag: "w+" });
@@ -126,7 +135,7 @@ if (!params['debug']) {
         return Array.from(d.convert_to ?? []).sort().join('\n');
     }
     const reversMap: { [k: string]: string[] } = {}
-    sumList.forEach(d => {
+    sumList.filter(d => d.moded).forEach(d => {
         const ck = conflKey(d);
         if (reversMap[ck]) {
             reversMap[ck].push(d.name);

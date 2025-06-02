@@ -27,9 +27,12 @@ useSimple(
     '农业区划',
     '工业区划',
     '研究区划'
-);*/
+);
+*/
 
 import "./vanilla"
 import "./CG"
 import "./wsg"
 import "./swgs"
+import "./ngnl"
+// import "./spth"
