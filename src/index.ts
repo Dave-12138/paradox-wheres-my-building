@@ -3,6 +3,12 @@ import path from "node:path";
 import Register from "./planet-register";
 import "./registed/index"
 import evd from '../env.json'
+const args = [...process.argv];
+const params = args.reduce((pv, v) => {
+    const [k, r] = v.split('=');
+    pv[k] = r ?? true;
+    return pv;
+}, {})
 const vanillaPath = path.join(evd.gamePath, 'common/districts');
 const targetPath = path.join(evd.modPath, 'common/districts');
 const vanilla = [
@@ -61,7 +67,8 @@ class District {
     }
     /**@type {string} */
     get result() {
-        return this.text.replace(converPatt, this.convert_to?.reduce((pv, v) => `${pv}\t${v}\n\t`, "\n\t") ?? "");
+        return this.text.replace(/(?:convert_to = \{)[\s\w\n]+(?:\})/, `inline_script = districts/PWMB_convert_to/${this.name} `);
+        // return this.text.replace(converPatt, this.convert_to?.reduce((pv, v) => `${pv}\t${v}\n\t`, "\n\t") ?? "");
     }
     _any(s: ((value: string) => boolean)): boolean {
         return s(this.name) || !!this.convert_to?.some(s);
@@ -100,6 +107,37 @@ sumList.forEach(ds => Register.list.forEach(ns => {
 // 合并
 const rst = Object.keys(variables).map(k => `@${k} = ${variables[k]}\n`).join('') + sumList.reduce((pv, v, i) => pv + v.result + '\n\n', "")
 // log
-console.log(rst);
+// console.log(rst);
+
 // 写入
-fs.writeFileSync(path.join(targetPath, 'PWMB_overwrite_districts.txt'), rst, { encoding: "utf-8", flag: "w+" })
+if (!params['debug']) {
+    fs.writeFileSync(path.join(targetPath, 'PWMB_overwrite_districts.txt'), rst, { encoding: "utf-8", flag: "w+" });
+
+    sumList.forEach(d => {
+
+        const inlineScriptPath = path.join(evd.modPath, 'common/inline_scripts/districts/PWMB_convert_to', d.name + '.txt');
+        fs.writeFileSync(inlineScriptPath, `convert_to = {${d.convert_to?.join('\n\t')}\n}`, { encoding: "utf-8", flag: "w+" });
+    });
+} else {
+    fs.writeFileSync(path.join('.', `log-${Date.now()}.txt`), rst, { encoding: "utf-8", flag: "w+" });
+
+
+    function conflKey(d: District) {
+        return Array.from(d.convert_to ?? []).sort().join('\n');
+    }
+    const reversMap: { [k: string]: string[] } = {}
+    sumList.forEach(d => {
+        const ck = conflKey(d);
+        if (reversMap[ck]) {
+            reversMap[ck].push(d.name);
+        } else {
+            reversMap[ck] = [d.name];
+        }
+    });
+    Object.keys(reversMap).forEach(v => {
+        console.log(reversMap[v].join(' '));
+        console.log('-----------------------------------');
+        console.log(v);
+        console.log('===================================');
+    })
+}
