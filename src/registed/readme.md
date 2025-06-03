@@ -50,3 +50,8 @@ import { useRing, useSimple } from "../planet-register";
 // ====xxxmod 123123123====
 useSimple('district_A_city','district_A_urban1','district_A_urban2','district_A_urban3');
 ```
+最后再在同目录下的 [index.ts](./index.ts) 加上一行
+``` typescript
+// 前面那个xxx.ts去掉.ts
+import "./xxx"
+```

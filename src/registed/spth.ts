@@ -7,4 +7,4 @@ useHab('district_spiritual_power_research',
 );
 useSimple(
     'district_spth_sp_produce',
-)
+);
