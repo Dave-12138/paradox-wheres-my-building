@@ -3,6 +3,7 @@
 ### 会用到的函数
 
 ```typescript
+import Register from "../planet-register";
 Register.addConvertTo({
     districts: [
         '城市区划',
@@ -23,14 +24,16 @@ Register.addConvertTo(
     '工业区划',
     '研究区划'
 );
+```
+
+```typescript
+import { useRing, useSimple } from "../planet-register";
 // 不是环或居住站 语法糖：
 useSimple(
     '城市区划',
     '发电区划',
     '采矿区划',
     '农业区划',
-    '工业区划',
-    '研究区划'
 );
 // 环世界的语法糖
 useRing(
@@ -38,20 +41,25 @@ useRing(
     '城市区段1',
     '城市区段2',
     '城市区段3'
- );
+);
 ```
+
 ### 例子
-如果你遇到了把原版星球改为xxxmod的星球A会丢建筑的问题，而星球A有四个区划分别叫做`district_A_city`、`district_A_urban1`、`district_A_urban2`、`district_A_urban3`
+
+如果你遇到了把原版星球改为xxxmod的星球A会丢建筑的问题，而星球A有四个区划分别叫做 `district_A_city` 、 `district_A_urban1` 、 `district_A_urban2` 、 `district_A_urban3`
 
 你需要在 `registed` 文件夹下新建一个文件 `xxx.ts` ，然后在里面写：
-``` typescript
+
+```typescript
 import { useRing, useSimple } from "../planet-register";
 //      ⬇️这是mod名字和创意工坊编号
 // ====xxxmod 123123123====
 useSimple('district_A_city','district_A_urban1','district_A_urban2','district_A_urban3');
 ```
+
 最后再在同目录下的 [index.ts](./index.ts) 加上一行
-``` typescript
+
+```typescript
 // 前面那个xxx.ts去掉.ts
-import "./xxx"
+import "./xxx";
 ```
