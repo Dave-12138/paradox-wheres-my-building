@@ -5,7 +5,8 @@
   "description": "",
   "main": "dist/index.cjs",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "test": "vite build && node . debug > log.txt"
   },
   "keywords": [],
   "author": "",
