@@ -3,8 +3,8 @@ import { useRing, useSimple } from "../planet-register";
 // CG INN
 useSimple(
     'district_holylight_city',
-    'district_holylight_reserve',
     'district_holylight_private',
+    'district_holylight_public',
     'district_holylight_reserve'
 );
 // CG INN ring
