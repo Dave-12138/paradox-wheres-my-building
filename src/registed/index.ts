@@ -8,3 +8,5 @@ import "./ngnl"
 // import "./spth"
 import "./elf"
 import "./aoe"
+
+import "./uma"
