@@ -1,5 +1,4 @@
-import { defineConfig } from "vite";
-import { BuildOptions } from "vite";
+import { defineConfig, BuildOptions } from "vite";
 const build: BuildOptions = {
     target: "modules",
     lib: {

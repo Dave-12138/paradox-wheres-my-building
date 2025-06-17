@@ -1,6 +1,5 @@
 
 
-import "./vanilla"
 import "./CG"
 import "./wsg"
 import "./swgs"
