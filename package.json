@@ -6,7 +6,8 @@
   "main": "dist/index.cjs",
   "scripts": {
     "build": "vite build",
-    "test": "vite build && node . debug > log.txt"
+    "test": "vite build && node . debug > log.txt",
+    "publish": "vite build && clean.bat && node . "
   },
   "keywords": [],
   "author": "",

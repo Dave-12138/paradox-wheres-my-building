@@ -8,7 +8,7 @@ const params = args.reduce((pv, v) => {
     const [k, r] = v.split('=');
     pv[k] = r ?? true;
     return pv;
-}, {})
+}, {} as Record<string, string | boolean>)
 const vanillaPath = path.join(evd.gamePath, 'common/districts');
 const targetPath = path.join(evd.modPath, 'common/districts');
 const vanilla = [
@@ -34,9 +34,9 @@ const vanilla = [
 // }
 const converPatt = /(?<=convert_to = \{)[\s\w\n]+(?=\})/;
 class District {
-    name: string;
+    name!: string;
     convert_to: string[] | undefined;
-    text: string;
+    text!: string;
     pos: number;
     moded: boolean;
     constructor(obj: string | District) {
