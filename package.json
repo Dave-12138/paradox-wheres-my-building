@@ -6,14 +6,14 @@
   "main": "dist/index.cjs",
   "scripts": {
     "build": "vite build",
-    "test": "vite build && node . debug > log.txt",
-    "publish": "vite build && clean.bat && node . "
+    "test": "tsx ./src/index debug > log.txt",
+    "publish": "clean.bat && tsx ./src/index "
   },
   "keywords": [],
   "author": "",
   "license": "GPL-3.0",
   "dependencies": {
-    "@types/node": "^22.15.18"
+    "@types/node": "^26"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",

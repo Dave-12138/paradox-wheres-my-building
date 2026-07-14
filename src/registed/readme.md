@@ -1,6 +1,6 @@
-## 如何添加新区划转换
+# 如何添加新区划转换
 
-### 会用到的函数
+## 会用到的函数
 
 ```typescript
 import Register from "../planet-register";
@@ -44,7 +44,7 @@ useRing(
 );
 ```
 
-### 例子
+## 例子
 
 如果你遇到了把原版星球改为xxxmod的星球A会丢建筑的问题，而星球A有四个区划分别叫做 `district_A_city` 、 `district_A_urban1` 、 `district_A_urban2` 、 `district_A_urban3`
 
