@@ -5,7 +5,6 @@
   "description": "",
   "main": "dist/index.cjs",
   "scripts": {
-    "build": "vite build",
     "test": "tsx ./src/index debug > log.txt",
     "publish": "clean.bat && tsx ./src/index "
   },
@@ -18,7 +17,6 @@
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",
     "tslib": "^2.8.1",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "typescript": "^5.8.3"
   }
 }
